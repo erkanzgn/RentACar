@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Entites.Concretes
 {
-    public  class CarColor:IEntity
+    public class Brand:IEntity
     {
-        public int Id { get; set; }
-        public string ColorName { get; set; }
-        public int ColorId { get; set; }
+        public int BrandId { get; set; }
+        public string BrandName { get; set; }
     }
 }

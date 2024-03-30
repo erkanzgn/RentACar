@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entites.Concretes;
 using Entites.DTOs;
@@ -19,30 +21,60 @@ namespace Business.Concretes
             _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IResult Add(Car car)
+        {
+            if (DateTime.Now.Hour==24) {
+                return new ErrorResult(Messages.MaintanceTime);
+            }
+            _carDal.Add(car);
+            return new SuccessResult(Messages.Added);
+        }
+
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new SuccessResult(Messages.Deleted);
+        }
+
+        public IDataResult<List<Car>> GetAll()
         {
             //gerekli sorgular
-            return _carDal.GetAll();
+            
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        public List<Car> GetAllByBarandId(int id)
+        public IDataResult<List<Car>> GetAllByBarandId(int id)
         {
-            return _carDal.GetAll(c=>c.BrandId == id);
+         
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
         }
 
-        public List<Car> GetAllByCarId(int id)
+        public IDataResult<List<Car>> GetAllByCarId(int id)
         {
-           return _carDal.GetAll(c=>c.CarId == id);           
+           
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.CarId == id));
         }
 
-        public List<Car> GetAllByColorId(int id)
+        public IDataResult<List<Car>> GetAllByColorId(int id)
         {
-            return _carDal.GetAll(c=> c.ColorId == id);
+            
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetails());
         }
+
+        public IResult Update(Car car)
+        {
+            if (DateTime.Now.Hour == 24)
+            {
+                return new ErrorResult(Messages.MaintanceTime);
+            }
+            _carDal.Update(car);
+            return new SuccessResult(Messages.Updated);
+        }
+
     }
 }
