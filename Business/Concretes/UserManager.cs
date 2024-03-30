@@ -38,4 +38,5 @@ namespace Business.Concretes
             return new SuccessResult(Messages.Updated);
         }
     }
+    //
 }
