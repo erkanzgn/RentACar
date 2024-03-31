@@ -45,9 +45,9 @@ namespace Business.Concretes
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
-        public IDataResult<List<RentalDetailDto>>GetRentalDetail(int id)
+        public IDataResult<List<RentalDetailDto>>GetAllRentalDetail()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetail());
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetAllRentalDetail());
         }
 
         public IResult Update(Rental rental)
@@ -55,5 +55,10 @@ namespace Business.Concretes
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.Updated); 
         }
+
+        //public IDataResult<RentalDetailDto> GetRentalDetail(int id)
+        //{
+        //   return new SuccessDataResult<RentalDetailDto>(_rentalDal.Get(r=>r.Id==id));
+        //}
     }
 }

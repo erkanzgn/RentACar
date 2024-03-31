@@ -80,7 +80,7 @@ public class CarDalInMemory : ICarDal
         throw new NotImplementedException();
     }
 
-    public List<CarDetailDto> GetCarDetails()
+    public List<CarDetailDto> GetAllCarDetails()
     {
         throw new NotImplementedException();
     }

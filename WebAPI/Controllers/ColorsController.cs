@@ -2,36 +2,37 @@
 using Entites.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandsController : ControllerBase
+    public class ColorsController : ControllerBase
     {
-        IBrandService _brandService;
-        public BrandsController(IBrandService brandService) 
+        IColorService _colorService;
+        public ColorsController(IColorService colorService)
         {
-          _brandService = brandService;
-        
+            _colorService = colorService;
         }
         [HttpGet("getall")]
 
         public IActionResult GetAll()
         {
-            var result = _brandService.GetAll();
-            if(result.Success)
+            var result = _colorService.GetAll();
+            if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
+
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(Brand brand)
+        [HttpPost("Add")]
+        public IActionResult Add(Color color)
         {
-            var result = _brandService.Add(brand);
-            if(result.Success)
+            var result = _colorService.Add(color);
+            if (result.Success)
             {
                 return Ok(result);
             }
