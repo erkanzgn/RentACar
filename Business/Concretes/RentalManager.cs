@@ -35,6 +35,16 @@ namespace Business.Concretes
             return new SuccessResult(Messages.Deleted);
         }
 
+        public IDataResult<Rental> GetById(int id)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id == id));
+        }
+
+        public IDataResult<List<Rental>> GetAll()
+        {
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
+        }
+
         public IDataResult<List<RentalDetailDto>>GetRentalDetail(int id)
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetail());
