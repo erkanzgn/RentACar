@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entites.Concretes;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
+   
     public class CarManager : ICarService
     {
         ICarDal _carDal;
@@ -20,12 +23,10 @@ namespace Business.Concretes
         {
             _carDal = carDal;
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
-        {
-            if (DateTime.Now.Hour==24) {
-                return new ErrorResult(Messages.MaintanceTime);
-            }
+        {   
+
             _carDal.Add(car);
             return new SuccessResult(Messages.Added);
         }
@@ -67,10 +68,7 @@ namespace Business.Concretes
 
         public IResult Update(Car car)
         {
-            if (DateTime.Now.Hour == 24)
-            {
-                return new ErrorResult(Messages.MaintanceTime);
-            }
+       
             _carDal.Update(car);
             return new SuccessResult(Messages.Updated);
         }
