@@ -21,7 +21,6 @@ namespace Business.Concretes
             _rentalDal = rentalDal;
         }
 
-   
         public IResult Add(Rental rental)
         {
             _rentalDal.Add(rental);
@@ -37,7 +36,7 @@ namespace Business.Concretes
 
         public IDataResult<Rental> GetById(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id == id));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.RentalId == id));
         }
 
         public IDataResult<List<Rental>> GetAll()
@@ -60,5 +59,8 @@ namespace Business.Concretes
         //{
         //   return new SuccessDataResult<RentalDetailDto>(_rentalDal.Get(r=>r.Id==id));
         //}
+
+         
+
     }
 }

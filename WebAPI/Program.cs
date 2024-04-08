@@ -37,8 +37,12 @@ namespace WebAPI
             //builder.Services.AddSingleton<IUserDal,EfUserDal>();    
 
 
-            builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>
-            (builder => { builder.RegisterModule(new AutofacBusinessModule()); });
+            builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory())
+                .ConfigureContainer<ContainerBuilder>
+            (builder => 
+            { 
+                builder.RegisterModule(new AutofacBusinessModule()); 
+            });
 
 
 
@@ -53,7 +57,7 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
