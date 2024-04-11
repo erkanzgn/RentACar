@@ -1,10 +1,10 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Core.Entities.Concretes;
 using Core.Utilities.Business;
 using Core.Utilities.Helper.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using Entites.Concretes;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -34,11 +34,8 @@ namespace Business.Concretes
                     return result;
                 }
 
-                string guid = _fileHelper.Add(file);
-                carImage.ImagePath = guid;
-                carImage.Date = DateTime.Now;
-                _carImageDal.Add(carImage);
-                return new SuccessDataResult<CarImage>(carImage);
+            carImage.ImagePath = _fileHelper.Upload(file, PathConstant.ImagesPath);
+            return new SuccessDataResult<CarImage>(carImage);
 
             }
 
@@ -46,22 +43,21 @@ namespace Business.Concretes
             public IResult Delete(CarImage carImage)
             {
                 _carImageDal.Delete(carImage);
-                _fileHelper.Delete(carImage.ImagePath!);
+                _fileHelper.Delete(PathConstant.ImagesPath + carImage.ImagePath);
                 return new SuccessResult();
             }
 
           
             public IResult Update(IFormFile file, CarImage carImage)
             {
-                _fileHelper.Update(file, carImage.ImagePath!);
-                carImage.Date = DateTime.Now;
-                _carImageDal.Update(carImage);
-                return new SuccessDataResult<CarImage>(carImage);
+            carImage.ImagePath = _fileHelper.Update(file, PathConstant.ImagesPath + carImage.ImagePath, PathConstant.ImagesPath);
+            _carImageDal.Update(carImage);
+            return new SuccessDataResult<CarImage>();
             }
             public IDataResult<List<CarImage>> GetAll()
             {
-                return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
-            }
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), Messages.Listed);
+        }
 
             public IDataResult<CarImage> GetById(int id)
             {

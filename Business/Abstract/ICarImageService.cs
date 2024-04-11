@@ -1,5 +1,5 @@
-﻿using Core.Entities.Concretes;
-using Core.Utilities.Results;
+﻿using Core.Utilities.Results;
+using Entites.Concretes;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

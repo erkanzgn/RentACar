@@ -10,45 +10,46 @@ namespace Core.Utilities.Helper.FileHelper
 {
     public class FileHelper : IFileHelper
     {
-        public string Add(IFormFile file)
+        public void Delete(string filePath)
         {
-            string fileExtension = Path.GetExtension(file.FileName);
-            string uniqFileName = GuidHelper_.Create() + fileExtension;
-            var imagePath = FilePath.Full(uniqFileName);
-            using FileStream fileStream = new(imagePath, FileMode.Create);
-            file.CopyTo(fileStream); ;
-            fileStream.Flush();
-            return uniqFileName;
-        }
-
-        public void Delete(string path)
-        {
-            if(Path.Exists(FilePath.Full(path)))
+            if (File.Exists(filePath))
             {
-                File.Delete(FilePath.Full(path));
-            }
-            else
-            {
-                throw new DirectoryNotFoundException("Dosya bulunamadı");
+                File.Delete(filePath);
             }
         }
 
-        public void Update(IFormFile file, string imagePath)
+        public string Update(IFormFile file, string filePath, string root)
         {
-            var fullpath = FilePath.Full(imagePath);
-            if (Path.Exists(fullpath))
+            if (File.Exists(filePath))
             {
-                using FileStream fileStream= new(fullpath, FileMode.Create);
-                file.CopyTo(fileStream);
-                fileStream.Flush();
-
+                File.Delete(filePath);
             }
-            else {
+            return this.Upload(file, root);
+        }
 
-                throw new DirectoryNotFoundException("Dosya bulunamadı");
+        public string Upload(IFormFile file, string root)
+        {
+            if (file.Length > 0)
+            {
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+                string extension = Path.GetExtension(file.FileName);
+                string guid = Guid.NewGuid().ToString();
+                string filePath = guid + extension; 
+
+                using (FileStream fileStream = File.Create(root + filePath)) 
+                {
+                    file.CopyTo(fileStream);
+                    fileStream.Flush();
+                    return filePath;
+                }
             }
+            return null;
 
 
         }
+  
     }
 }
