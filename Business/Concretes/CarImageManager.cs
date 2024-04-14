@@ -33,7 +33,7 @@ namespace Business.Concretes
                 {
                     return result;
                 }
-
+            _carImageDal.Add(carImage);
             carImage.ImagePath = _fileHelper.Upload(file, PathConstant.ImagesPath);
             return new SuccessDataResult<CarImage>(carImage);
 

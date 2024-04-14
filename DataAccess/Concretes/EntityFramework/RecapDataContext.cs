@@ -13,12 +13,12 @@ namespace DataAccess.Concretes.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=ozgun\sqlexpress;Database=RecapData;TrustServerCertificate=True;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RecapData;TrustServerCertificate=True;Trusted_Connection=true");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entites.Concretes.Brand>().HasKey(b => b.BrandId);
-            modelBuilder.Entity<Entites.Concretes.Color>().HasKey(b => b.ColorId);
+           
+            modelBuilder.Entity<Entites.Concretes.CarImage>().HasKey(i=>i.ImageId);
         }
   
         public DbSet<Car> Cars { get; set; }
@@ -27,7 +27,7 @@ namespace DataAccess.Concretes.EntityFramework
         public DbSet<Customer> Customers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Rental> Rentals { get; set; }
-     
+        public DbSet<CarImage> CarImages { get; set; }
     
     }
 }
