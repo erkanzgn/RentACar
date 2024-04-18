@@ -33,8 +33,9 @@ namespace Business.Concretes
                 {
                     return result;
                 }
-            _carImageDal.Add(carImage);
             carImage.ImagePath = _fileHelper.Upload(file, PathConstant.ImagesPath);
+            carImage.Date = DateTime.Now;
+            _carImageDal.Add(carImage);
             return new SuccessDataResult<CarImage>(carImage);
 
             }
