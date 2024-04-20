@@ -4,8 +4,12 @@ using Autofac.Extensions.DependencyInjection;
 using Business.Abstract;
 using Business.Concretes;
 using Business.DependencyResolves.Autofac;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concretes.EntityFramework;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI
 {
@@ -36,6 +40,24 @@ namespace WebAPI
             //builder.Services.AddSingleton<IUserService, UserManager>();
             //builder.Services.AddSingleton<IUserDal,EfUserDal>();    
 
+            var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+                });
 
             builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>
@@ -64,6 +86,7 @@ namespace WebAPI
 
             app.UseAuthorization();
 
+            app.UseAuthentication();
 
             app.MapControllers();
 

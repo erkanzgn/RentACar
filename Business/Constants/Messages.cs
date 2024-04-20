@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Core.Entities.Concretes;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,8 +18,14 @@ namespace Business.Constants
         public static string MaintanceTime = "Sistem Bakımda";
         public static string Listed = "Listelendi";
         public static string InvalıdObject = "Geçerli bir nesne bulunamadı";
-        public static string CarCountBrandError="Bu markadan araba limitini aştınız";
+        public static string CarCountBrandError = "Bu markadan araba limitini aştınız";
         public static string FileNotFound = "Dosya bulunamadı";
-        internal static string ImageLimitExceded="Fotograf limiti aşıldı";
+        public static string ImageLimitExceded = "Fotograf limiti aşıldı";
+        public static string UserNotFound = "Kullanıcı Bulunamadı!";
+        public static string PasswordError = "Parola Yanlış";
+        public static string SuccesfulLogin = "Sisteme giriş başarılı";
+        public static string UserAlreadtExists = "Kullanıcı mevcut";
+        public static string UserRegistered="Kullanıcı Başarıyla kaydedildi";
+        public static string AccessTokenCreated="Erişim Token i oluşturuludu";
     }
 }
