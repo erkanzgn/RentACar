@@ -17,7 +17,7 @@ namespace Core.Aspect.Autofac.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new Exception("180 hız yakalayan ayılır(bu bir doğrulama sınıfı değil)");
+                throw new Exception("bu bir doğrulama sınıfı değil");
             }
 
             _validatorType = validatorType;
