@@ -14,8 +14,7 @@ namespace DataAccess.Concretes.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RecapData;TrustServerCertificate=True;Trusted_Connection=true",
-                options => options.EnableRetryOnFailure());
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RentACar;TrustServerCertificate=True;Trusted_Connection=true");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

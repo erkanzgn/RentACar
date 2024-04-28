@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace Core.Extensions
 {
-    public static  class ClaimPrincipalExtensions
+    public static class ClaimsPrincipalExtensions
     {
-        public static List<string>Claims(this ClaimsPrincipal claimPrincipal,string claimType)
+        public static List<string> Claims(this ClaimsPrincipal claimsPrincipal, string claimType)
         {
-            var result = claimPrincipal?.FindAll(claimType)?.Select(x => x.Value).ToList();
+            var result = claimsPrincipal?.FindAll(claimType)?.Select(x => x.Value).ToList();
+            if (result == null)
+            {
+                return new List<String>(); // veya isteğe bağlı olarak başka bir işlem yapılabilir
+            }
             return result;
         }
-        public static List<string> ClaimRules(this ClaimsPrincipal claimPrincipal)
+
+        public static List<string> ClaimRoles(this ClaimsPrincipal claimsPrincipal)
         {
-            return claimPrincipal?.Claims(ClaimTypes.Role);
+            return claimsPrincipal?.Claims(ClaimTypes.Role);
         }
     }
 }

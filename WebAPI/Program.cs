@@ -1,9 +1,12 @@
-
 using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Business.Abstract;
 using Business.Concretes;
 using Business.DependencyResolves.Autofac;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
@@ -11,40 +14,25 @@ using DataAccess.Concretes.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WebAPI
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+// Add services to the container.
 
-            builder.Services.AddControllers();
-            //builder.Services.AddSingleton<ICarService,CarManager>();
-            //builder.Services.AddSingleton<ICarDal,EfCarDal>();
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+               .ConfigureContainer<ContainerBuilder>(builder =>
+               {
+                   builder.RegisterModule(new AutofacBusinessModule());
+               });
 
-            //builder.Services.AddSingleton<IBrandService,BrandManager>();
-            //builder.Services.AddSingleton<IBrandDal,EfBrandDal>();
+builder.Services.AddControllers();
 
-            //builder.Services.AddSingleton<IColorService,ColorManager>();
-            //builder.Services.AddSingleton<IColorDal,EfColorDal>();
 
-            //builder.Services.AddSingleton<ICustomerService, CustomerManager>();
-            //builder.Services.AddSingleton<ICustomerDal,EfCustomerDal>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-            //builder.Services.AddSingleton<IRentalService,RentalManager>();
-            //builder.Services.AddSingleton<IRentalDal,EfRentalDal>();
+var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
-            //builder.Services.AddSingleton<IUserService, UserManager>();
-            //builder.Services.AddSingleton<IUserDal,EfUserDal>();    
-
-            var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -58,39 +46,33 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
+//ServiceTool.Create(builder.Services);
 
-            builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory())
-                .ConfigureContainer<ContainerBuilder>
-            (builder => 
-            { 
-                builder.RegisterModule(new AutofacBusinessModule()); 
-            });
+builder.Services.AddDependencyResolvers(new ICoreModule[]
+{
+    new CoreModule()
+});
 
+//builder.Services.AddSingleton<IProductService,ProductManager>();
+//builder.Services.AddSingleton<IProductDal,EfProductDal>();
 
+var app = builder.Build();
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseStaticFiles();
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            app.UseAuthentication();
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication(); //JWT
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+

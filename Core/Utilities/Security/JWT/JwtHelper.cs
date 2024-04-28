@@ -58,7 +58,7 @@ namespace Core.Utilities.Security.JWT
         private IEnumerable<Claim>SetClaims(User user, List<OperationClaim> operationClaims)
         {
             var claims = new List<Claim>();
-            claims.AddNameIdentityfier(user.UserId.ToString());
+            claims.AddNameIdentityfier(user.Id.ToString());
             claims.AddEmail(user.Email);
             claims.AddName($"{user.FirstName} {user.LastName}");
             claims.AddRoles(operationClaims.Select(x => x.Name).ToArray());
