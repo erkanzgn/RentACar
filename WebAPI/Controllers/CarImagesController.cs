@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
-            var result = _carImageService.GetById(id);
+            var result = _carImageService.GetByImageId(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] IFormFile file, [FromForm] int id)
         {
-            CarImage oldCarImage = _carImageService.GetById(id).Data;
+            CarImage oldCarImage = _carImageService.GetByImageId(id).Data;
             var result = _carImageService.Update(file, oldCarImage);
             if (result.Success)
             {
@@ -82,5 +82,6 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+    
     }
 }

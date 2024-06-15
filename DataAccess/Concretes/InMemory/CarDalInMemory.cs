@@ -85,6 +85,26 @@ public class CarDalInMemory : ICarDal
         throw new NotImplementedException();
     }
 
+    public List<CarDetailDto> GetCarDetailByBrandColorId(int colorId, int brandId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<CarDetailDto> GetCarDetailByCarId(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<CarDetailDto> GetCarDetailByColorId(int colorId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<CarDetailDto> GetCarDetailsByBrandId(int brandId)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Update(Car entity)
     {
         throw new NotImplementedException();
